@@ -1,35 +1,68 @@
 <!DOCTYPE html>
-<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Svatební odpočítávač</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;background:transparent;font-family:"Cormorant Garamond",serif;color:#8d5b46}
-body{display:flex;justify-content:center;align-items:center;min-height:88px}
-#wrap{width:100%;text-align:center;padding:8px 6px;box-sizing:border-box}
-#countdown{display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:nowrap}
-.item{min-width:62px}.value{font-size:44px;line-height:1;font-weight:600}.label{font-size:17px;margin-top:2px;color:#6f564b}.message{font-size:42px;font-weight:600}
-@media(max-width:520px){#countdown{gap:10px}.item{min-width:48px}.value{font-size:34px}.label{font-size:14px}.message{font-size:28px}}
-</style></head><body>
-<div id="wrap"><div id="countdown">
-<div class="item"><div id="d" class="value">0</div><div class="label">dní</div></div>
-<div class="item"><div id="h" class="value">00</div><div class="label">hodin</div></div>
-<div class="item"><div id="m" class="value">00</div><div class="label">minut</div></div>
-<div class="item"><div id="s" class="value">00</div><div class="label">sekund</div></div>
-</div></div>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:transparent;overflow:hidden}
+body{font-family:"Cormorant Garamond",serif;color:#8d5b46}
+#wrap{width:100%;padding:8px 10px}
+#countdown{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(55px,1fr));
+ gap:12px;
+ text-align:center;
+ align-items:center;
+ max-width:520px;
+ margin:0 auto;
+}
+.value{font-size:clamp(1.9rem,7vw,2.8rem);font-weight:600;line-height:1}
+.label{font-size:clamp(.8rem,2.8vw,1rem);color:#6f564b}
+.message{
+ text-align:center;
+ font-size:clamp(1.7rem,6vw,2.6rem);
+ font-weight:600;
+ color:#8d5b46;
+ padding:8px 0;
+}
+@media(max-width:420px){
+ #countdown{gap:8px;grid-template-columns:repeat(2,1fr);max-width:240px}
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+<div id="countdown">
+<div><div id="d" class="value">0</div><div class="label">dní</div></div>
+<div><div id="h" class="value">00</div><div class="label">hodin</div></div>
+<div><div id="m" class="value">00</div><div class="label">minut</div></div>
+<div><div id="s" class="value">00</div><div class="label">sekund</div></div>
+</div>
+</div>
 <script>
 const target=new Date("2026-10-10T12:30:00");
 const endDay=new Date("2026-10-11T00:00:00");
 const pad=n=>String(n).padStart(2,"0");
 function update(){
+ const wrap=document.getElementById("wrap");
  const now=new Date();
- if(now>=target&&now<endDay){wrap.innerHTML='<div class="message">Dnes je náš den ♥</div>';return;}
+ if(now>=target && now<endDay){wrap.innerHTML='<div class="message">Dnes je náš den ♥</div>';return;}
  if(now>=endDay){wrap.innerHTML='<div class="message">Už jsme manželé Smrčkovi ♥</div>';return;}
  let diff=target-now;
  const days=Math.floor(diff/86400000); diff%=86400000;
  const hours=Math.floor(diff/3600000); diff%=3600000;
  const minutes=Math.floor(diff/60000); diff%=60000;
  const seconds=Math.floor(diff/1000);
- d.textContent=days;h.textContent=pad(hours);m.textContent=pad(minutes);s.textContent=pad(seconds);
+ d.textContent=days;
+ h.textContent=pad(hours);
+ m.textContent=pad(minutes);
+ s.textContent=pad(seconds);
 }
-update();setInterval(update,1000);
-</script></body></html>
+update();
+setInterval(update,1000);
+</script>
+</body>
+</html>
