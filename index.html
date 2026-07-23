@@ -1,120 +1,35 @@
 <!DOCTYPE html>
-<html lang="cs">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Svatební odpočítávač</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:transparent;font-family:"Cormorant Garamond",serif;color:#000}
-#cd{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:8px;padding:10px}
-.group{display:flex;align-items:flex-end;gap:4px}
-.digits{display:flex;gap:2px;perspective:700px}
-.digit{width:.72em;height:1.15em;overflow:hidden;display:inline-block;font-size:40px;line-height:1.15;font-weight:600;text-align:center;transform-style:preserve-3d}
-.digit span{display:block;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.digit.flip span{transform:rotateX(-360deg)}
-.label{font-size:26px;margin-left:4px;padding-bottom:8px}
-.dot{font-size:36px;padding-bottom:8px}
-@media (max-width:700px){
-
-#cd{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px 12px;
-    justify-items:center;
-    align-items:center;
-    padding:20px 10px;
-}
-
-.group{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-.digits{
-    justify-content:center;
-}
-
-.digit{
-    font-size:50px;
-}
-
-.label{
-    font-size:15px;
-    margin:2px 0 0 0;
-}
-
-.dot{
-    display:none;
-}
-
-}
-</style>
-</head>
-<body>
-<div id="cd"></div>
-
+html,body{margin:0;background:transparent;font-family:"Cormorant Garamond",serif;color:#8d5b46}
+body{display:flex;justify-content:center;align-items:center;min-height:88px}
+#wrap{width:100%;text-align:center;padding:8px 6px;box-sizing:border-box}
+#countdown{display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:nowrap}
+.item{min-width:62px}.value{font-size:44px;line-height:1;font-weight:600}.label{font-size:17px;margin-top:2px;color:#6f564b}.message{font-size:42px;font-weight:600}
+@media(max-width:520px){#countdown{gap:10px}.item{min-width:48px}.value{font-size:34px}.label{font-size:14px}.message{font-size:28px}}
+</style></head><body>
+<div id="wrap"><div id="countdown">
+<div class="item"><div id="d" class="value">0</div><div class="label">dní</div></div>
+<div class="item"><div id="h" class="value">00</div><div class="label">hodin</div></div>
+<div class="item"><div id="m" class="value">00</div><div class="label">minut</div></div>
+<div class="item"><div id="s" class="value">00</div><div class="label">sekund</div></div>
+</div></div>
 <script>
 const target=new Date("2026-10-10T12:30:00");
-
-const parts=[
- {k:"days",l:"dní",len:2},
- {k:"hours",l:"hodin",len:2},
- {k:"minutes",l:"minut",len:2},
- {k:"seconds",l:"sekund",len:2}
-];
-
-const root=document.getElementById("cd");
-const refs={};
-
-parts.forEach((p,i)=>{
- const g=document.createElement("div"); g.className="group";
- const digits=document.createElement("div"); digits.className="digits";
- refs[p.k]=[];
- for(let j=0;j<p.len;j++){
-   const d=document.createElement("div"); d.className="digit";
-   const s=document.createElement("span"); s.textContent="0";
-   d.appendChild(s); digits.appendChild(d); refs[p.k].push({box:d,span:s,val:"0"});
- }
- g.appendChild(digits);
- const lab=document.createElement("div"); lab.className="label"; lab.textContent=p.l;
- g.appendChild(lab);
- root.appendChild(g);
- if(i<parts.length-1){
-   const dot=document.createElement("div"); dot.className="dot"; dot.textContent="·";
-   root.appendChild(dot);
- }
-});
-
-function setDigits(key,val){
- const arr=refs[key];
- const txt=String(val).padStart(arr.length,"0");
- arr.forEach((d,i)=>{
-   if(d.val!==txt[i]){
-      d.val=txt[i];
-      d.box.classList.remove("flip");
-      void d.box.offsetWidth;
-      d.span.textContent=txt[i];
-      d.box.classList.add("flip");
-   }
- });
-}
-
-function tick(){
- let diff=target-new Date();
- if(diff<0){root.innerHTML="<div style='font-size:52px'>Dnes je ten den! ❤️</div>";return;}
+const endDay=new Date("2026-10-11T00:00:00");
+const pad=n=>String(n).padStart(2,"0");
+function update(){
+ const now=new Date();
+ if(now>=target&&now<endDay){wrap.innerHTML='<div class="message">Dnes je náš den ♥</div>';return;}
+ if(now>=endDay){wrap.innerHTML='<div class="message">Už jsme manželé Smrčkovi ♥</div>';return;}
+ let diff=target-now;
  const days=Math.floor(diff/86400000); diff%=86400000;
  const hours=Math.floor(diff/3600000); diff%=3600000;
  const minutes=Math.floor(diff/60000); diff%=60000;
  const seconds=Math.floor(diff/1000);
- setDigits("days",days);
- setDigits("hours",hours);
- setDigits("minutes",minutes);
- setDigits("seconds",seconds);
+ d.textContent=days;h.textContent=pad(hours);m.textContent=pad(minutes);s.textContent=pad(seconds);
 }
-tick();
-setInterval(tick,1000);
-</script>
-</body>
-</html>
+update();setInterval(update,1000);
+</script></body></html>
