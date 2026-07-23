@@ -7,9 +7,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:transparent;overflow:hidden}
-body{font-family:"Cormorant Garamond",serif;color:#8d5b46}
-#wrap{width:100%;padding:8px 10px}
+html,body{
+    margin:0;
+    background:transparent;
+    font-family:"Cormorant Garamond",serif;
+    color:#8d5b46;
+    min-height:170px;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:170px;
+}
+
+#wrap{
+    width:100%;
+    min-height:170px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:10px 6px;
+    box-sizing:border-box;
+}
 #countdown{
  display:grid;
  grid-template-columns:repeat(4,minmax(55px,1fr));
@@ -64,5 +86,6 @@ function update(){
 update();
 setInterval(update,1000);
 </script>
+<div style="height:40px;opacity:0;pointer-events:none;"></div>
 </body>
 </html>
