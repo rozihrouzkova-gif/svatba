@@ -15,29 +15,41 @@ body{margin:0;background:transparent;font-family:"Cormorant Garamond",serif;colo
 .digit.flip span{transform:rotateX(-360deg)}
 .label{font-size:26px;margin-left:4px;padding-bottom:8px}
 .dot{font-size:36px;padding-bottom:8px}
-@media(max-width:700px){
+@media (max-width:700px){
+
 #cd{
-    justify-content:center;
-    row-gap:14px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px 12px;
+    justify-items:center;
+    align-items:center;
+    padding:20px 10px;
 }
 
 .group{
-    width:48%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.digits{
     justify-content:center;
 }
 
 .digit{
-    font-size:38px;
+    font-size:44px;
 }
 
 .label{
-    font-size:17px;
+    font-size:18px;
+    margin:6px 0 0 0;
 }
 
 .dot{
     display:none;
 }
-}}
+
+}
 </style>
 </head>
 <body>
